@@ -48,13 +48,12 @@ type KafkaConsumer struct {
 	reader *kafka.Reader
 }
 
-func NewKafkaConsumer() *KafkaConsumer {
-
+func NewKafkaConsumer(cfg *config.Config) *KafkaConsumer {
 	return &KafkaConsumer{
 		reader: kafka.NewReader(kafka.ReaderConfig{
-			Brokers: []string{"localhost:9092"},
-			Topic:   "payment-events",
-			GroupID: "notification-service",
+			Brokers: []string{cfg.Kafka.Broker},
+			Topic:   cfg.Kafka.Topic,
+			GroupID: cfg.Kafka.GroupID,
 		}),
 	}
 }

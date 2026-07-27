@@ -1,5 +1,8 @@
 # TODO
 
+- Prometheus middleware + `/metrics` & `/histograms` on all HTTP services
+- gRPC health checks for payment
+- Separate databases / migrations tool
 - Migrate to yaml based config with app managed config
 - Common logger
 - Rate limiting
@@ -9,7 +12,7 @@
 - Benchmark tests with mem, cpu profiling
 - Load testing using vegeta
 - OTel logging with metrices, traces & spans
-- OTel interceptors for REST & gRPC APIs
+- OTel interceptors for REST & gRPC APIs as well cross-service `traceparent`
 - OTel collector
 - Alerting on
     - Regression (load, profiling) using CI
@@ -18,4 +21,29 @@
         - Logs
         - Screenshots
 - Add PGO builds
-- Integrate Twilio for OTP based user account verification
+- Twilio for OTP based user account verification
+- Razorpay test account for payment gateway
+- Sendgrid for email notifications
+- Slack for alerting
+- W3 tail samples for frontend
+- SLOs as PromQL + error-budget dashboard
+- Go orchestrator (Temporal): order→payment→notify
+- vegeta / fraud spike / latency spike on this stack
+- k3s + helm
+
+# LLM
+
+- “order summary”, “support reply”, or “fraud note” service behind gateway
+- Loki + Langfuse in Docker Compose as observability for LLM paths
+- Prompt versioning + cost dashboard
+- RAG + pgvector | Product/FAQ or order-policy Q&A (pair with Product Service)
+- Hallucination monitoring + LLM SLOs: Alerts in same Grafana; separate LLM SLOs from payment SLOs
+- alert-service (Go + LLM summarizer → Slack): Consumer on fraud/payment topics; reuses Notification pattern
+
+
+# Rust
+
+- Axum REST + JWT + Tower: New service (e.g. inventory/product)
+- Tonic gRPC + OTel in Rust:  | e.g. inventory check or fraud score called from Order (mirrors payment pattern)
+- Traces using Tempo
+- fraud-detector (Rust + Candle + Tonic): Called from Order or Payment before commit; Kafka event on high risk

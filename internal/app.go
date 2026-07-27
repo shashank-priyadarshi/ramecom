@@ -16,14 +16,6 @@ type App interface {
 	Start() error
 }
 
-// Apps are:
-// 	gateway
-// 	auth
-// 	user
-// 	order
-// 	payment
-// 	notification
-
 func New(app *string) (App, error) {
 	if app == nil || *app == "" || *app == "unknown" {
 		return nil, fmt.Errorf("app flag is required (gateway|auth|user|order|payment|notification)")
@@ -76,7 +68,7 @@ func New(app *string) (App, error) {
 		return server.NewPayment(cfg, h), nil
 
 	case "notification":
-		consumer := service.NewKafkaConsumer()
+		consumer := service.NewKafkaConsumer(cfg)
 		return server.NewNotification(consumer), nil
 
 	default:

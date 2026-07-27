@@ -48,8 +48,8 @@ type Kafka struct {
 }
 
 // Load reads configuration from the environment.
-// Optional envFiles are loaded first (e.g. build/<app>/.env); then a root .env if present.
-// Already-set process env vars always win over file values.
+// Optional envFiles are loaded first (e.g. build/.env/.<app>.env); then a root .env if present.
+// Already-set process env vars always win over file values (including Docker Compose env_file).
 func Load(envFiles ...string) *Config {
 	if len(envFiles) > 0 {
 		_ = godotenv.Load(envFiles...)
@@ -112,6 +112,12 @@ func firstNonEmpty(values ...string) string {
 	return ""
 }
 
+// EnvFileForApp returns the path to the app env file under build/.env/.
+// Layout: build/.env/.<app>.env (e.g. build/.env/.gateway.env).
+func EnvFileForApp(app string) string {
+	return fmt.Sprintf("build/.env/.%s.env", app)
+}
+
 func LoadForApp(app string) *Config {
-	return Load(fmt.Sprintf("build/%s/.env", app))
+	return Load(EnvFileForApp(app))
 }

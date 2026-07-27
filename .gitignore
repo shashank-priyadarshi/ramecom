@@ -1,0 +1,18 @@
+# Binaries & local run artifacts
+bin/
+tmp/
+*.log
+coverage.out
+coverage.html
+
+# Env secrets (keep committed sample/layout under build/.env if desired)
+.env
+!.env/
+!**/.env/
+!**/.*.env
+
+# IDE / OS
+.idea/
+.vscode/
+*.swp
+.DS_Store

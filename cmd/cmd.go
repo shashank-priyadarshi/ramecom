@@ -8,6 +8,14 @@ import (
 	"github.com/rajabhishekmaurya/ecom/internal"
 )
 
+// Apps are:
+//
+//	gateway
+//	auth
+//	user
+//	order
+//	payment
+//	notification
 var (
 	app = flag.String("app", "unknown", "Used to specify target app to run at startup.")
 )

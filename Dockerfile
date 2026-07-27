@@ -3,36 +3,28 @@
 # -----------------------------
 FROM golang:1.26-alpine AS builder
 
-ARG NAME
-ARG PATH
-
-WORKDIR /app
-RUN apk add --no-cache git
+WORKDIR /src
+RUN apk add --no-cache git ca-certificates
 
 COPY go.mod go.sum ./
 RUN go mod download
 
 COPY . .
-
-RUN go build \
-    -ldflags="-s -w" \
-    -o ${NAME} \
-    ${PATH}
+RUN CGO_ENABLED=0 go build -ldflags="-s -w" -o /out/ecom ./cmd
 
 # -----------------------------
 # Runtime Stage
 # -----------------------------
 FROM alpine:3.22
 
-ARG NAME
-ARG PORT
-
-WORKDIR /app
 RUN apk add --no-cache ca-certificates
+WORKDIR /app
 
-ARG EXE_PATH=/app/${NAME}
-COPY --from=builder ${EXE_PATH} .
+COPY --from=builder /out/ecom /app/ecom
+# Optional: app env files for LoadForApp when not injected by Compose.
+# Note: .dockerignore may exclude .env paths; Compose env_file injects process env instead.
+COPY build/ /app/build/
 
-EXPOSE ${PORT}
-
-CMD ["${EXE_PATH} -app=${NAME}"]
+EXPOSE 8080
+ENTRYPOINT ["/app/ecom"]
+CMD ["-app", "gateway"]
