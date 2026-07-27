@@ -1,0 +1,21 @@
+# TODO
+
+- Migrate to yaml based config with app managed config
+- Common logger
+- Rate limiting
+- Throttling
+    - Success vs failure
+    - Usage
+- Benchmark tests with mem, cpu profiling
+- Load testing using vegeta
+- OTel logging with metrices, traces & spans
+- OTel interceptors for REST & gRPC APIs
+- OTel collector
+- Alerting on
+    - Regression (load, profiling) using CI
+    - Request failures
+    - Context enriched alerts using
+        - Logs
+        - Screenshots
+- Add PGO builds
+- Integrate Twilio for OTP based user account verification
